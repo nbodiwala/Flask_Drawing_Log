@@ -1,0 +1,75 @@
+{% extends "layout_project.html" %}
+{% block content %}
+    <div class="dropdown">
+        <p onclick="myFunction()" class="dropbtn">Filter by Type</p>
+        <div id="myDropdown" class="dropdown-content">
+        {% for sheet_type in sheet_types %}
+            <a href="{{ url_for('project', project_num=project_num) }}/{{ sheet_type._mapping.get('sheet_type') }}">{{ sheet_type._mapping.get('sheet_type') }}</a>
+        {% endfor %}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('project', project_num=project_num) }}">Clear Filter</a>
+        </div>
+    </div>
+    <head>
+        <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+        tr:nth-child(even) {
+            background-color: #dedede};
+        </style>
+        </head>
+        <body>
+            <h3>{{ project_num }} - {{ project_name }}</h3>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Sheet #</th>
+                    <th onclick="sortTable(1)">Sheet Name</th>
+                    <th onclick="sortTable(2)">Rev</th>
+                    <th onclick="sortTable(3)">Description</th>
+                    <th onclick="sortTable(4)">Date</th>
+                    <th onclick="sortTable(5)">By</th>
+                </tr>
+                {% for drawing in drawings %}
+                    <tr>
+                        <td>{{drawing.sheet_num}}</td>
+                        <td>{{drawing.sheet_name}}</td>
+                        <td>{{drawing.current_rev}}</td>
+                        <td>{{drawing.current_rev_desc}}</td>
+                        <td>{{drawing.current_rev_date}}</td>
+                        <td>{{drawing.current_rev_by}}</td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        </body>
+        <script>
+            /* When the user clicks on the button,
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+              document.getElementById("myDropdown").classList.toggle("show");
+            }
+            
+            function filterFunction() {
+                var input, filter, ul, li, a, i;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                div = document.getElementById("myDropdown");
+                a = div.getElementsByTagName("a");
+                for (i = 0; i < a.length; i++) {
+                txtValue = a[i].textContent || a[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    a[i].style.display = "";
+                } else {
+                    a[i].style.display = "none";
+                }
+                }
+            }
+            </script>
+{% endblock content %}
+
