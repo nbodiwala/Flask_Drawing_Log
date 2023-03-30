@@ -51,20 +51,18 @@ def home():
     return render_template('home.html', form=form)
 
 @app.route('/<int:project_num>')
-def project(project_num):
-    drawings = Sheets.query.filter_by(project_id=project_num)
-    sheet_types = drawings.with_entities(Sheets.sheet_type).distinct()
-    project = Projects.query.filter_by(id=project_num).first()
-    return render_template('project.html', drawings=drawings, title='project', sheet_types=sheet_types, project_num=project_num, project_name=project.project_name)
-
 @app.route('/<int:project_num>/<string:sheet_type>')
-def project_type(project_num, sheet_type):
-    drawings_for_table = Sheets.query.filter_by(project_id=project_num, sheet_type=sheet_type)
+def project(project_num, sheet_type=None):
     drawings_for_dropdown = Sheets.query.filter_by(project_id=project_num)
+    if sheet_type:
+        drawings_for_table = Sheets.query.filter_by(project_id=project_num, sheet_type=sheet_type)
+        sheet_filter_applied = True
+    else:
+        drawings_for_table = Sheets.query.filter_by(project_id=project_num)
+        sheet_filter_applied = False
     sheet_types = drawings_for_dropdown.with_entities(Sheets.sheet_type).distinct()
     project = Projects.query.filter_by(id=project_num).first()
-
-    return render_template('project.html', drawings=drawings_for_table, title='project',sheet_types=sheet_types, project_num=project_num, project_name=project.project_name)
+    return render_template('project.html', drawings=drawings_for_table, title=project_num, sheet_types=sheet_types, project_num=project_num, project_name=project.project_name, sheet_filter_applied=sheet_filter_applied)
 
 if __name__ == '__main__':
     app.run(debug=True)

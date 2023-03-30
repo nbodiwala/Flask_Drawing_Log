@@ -7,7 +7,9 @@
             <a href="{{ url_for('project', project_num=project_num) }}/{{ sheet_type._mapping.get('sheet_type') }}">{{ sheet_type._mapping.get('sheet_type') }}</a>
         {% endfor %}
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{{ url_for('project', project_num=project_num) }}">Clear Filter</a>
+        {% if sheet_filter_applied %}
+            <a class="dropdown-item" href="{{ url_for('project', project_num=project_num) }}">Clear Filter</a>
+        {% endif %}
         </div>
     </div>
     <head>
@@ -28,12 +30,12 @@
             <h3>{{ project_num }} - {{ project_name }}</h3>
             <table style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Sheet #</th>
-                    <th onclick="sortTable(1)">Sheet Name</th>
-                    <th onclick="sortTable(2)">Rev</th>
-                    <th onclick="sortTable(3)">Description</th>
-                    <th onclick="sortTable(4)">Date</th>
-                    <th onclick="sortTable(5)">By</th>
+                    <th>Sheet #</th>
+                    <th>Sheet Name</th>
+                    <th>Rev</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>By</th>
                 </tr>
                 {% for drawing in drawings %}
                     <tr>
@@ -70,6 +72,6 @@
                 }
                 }
             }
-            </script>
+        </script>
 {% endblock content %}
 
